@@ -1,0 +1,40 @@
+<:Title>
+  TimeSheet
+
+<:Body>
+  <form e-submit="add_timesheet" role="form">
+    month: <input type="text" value="{{new_timesheet._month}}"><br>
+    day: <input type="text" value="{{new_timesheet._day}}"><br>
+    client: <input type="text" value="{{new_timesheet._client}}"><br>
+    {{ (1..8).to_a.each do |n|}}
+      <a
+        e-click="page._new_timesheet_hour_n = n"
+        style="font-weight:{{:bold if page._new_timesheet_hour_n.to_i >= n}};">
+        {{n}}
+      </a>
+    {{end}}
+    <input type="submit">
+  </form>
+
+  <blockquote>
+    <h4>preview</h4>
+    <:timeentry time_entry="{{new_timesheet}}"></:timeentry>
+  </blockquote>
+
+  <h2>List</h2>
+
+  <ul>
+    {{_timesheets.each do |entry|}}
+    <li>
+      <:timeentry time_entry="{{entry}}"></:timeentry>
+      <a e-click="remove_timeentry(entry)" style="color:red;">remove</a>
+    </li>
+    {{end}}
+  </ul>
+
+
+<:Timeentry>
+  <b>Day:</b>     {{attrs.time_entry._day}}
+                  {{attrs.time_entry._month}},
+  <b>Client:</b>  {{attrs.time_entry._client}}
+  <b>Hours:</b>   {{attrs.time_entry._hour_n}}
